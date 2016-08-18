@@ -3,10 +3,12 @@ import ibmiotf.device
 
 ''' List of stations (We should make a database to put list of stations)'''
 stations = {
-  "EB1" : 14, 
-  "EB2" : 36,
-  "HuntLibrary" : 48
+  "EB1" : [14, 0],
+  "EB2" : [36, 0],
+  "Hunt" : [48, 0]
 }
+
+counts = [0, 0, 0]
 
 ''' Connection establishment to IBM Bluemix Cloud'''
 cloudTopic = "status"
@@ -28,15 +30,23 @@ message to IBM Blumix for the device location'''
 def onButtonPush(gpio):
   if gpio.read() == 1:
     mystation = ""
+    status = ""
     for key, value in stations.iteritems():
-      if value == gpio.getPin(False):
+      if value[0] == gpio.getPin(False):
         mystation = str(key)
-    #print("My station is: " + mystation)
+    stations[mystation][1] += 1
+    if stations[mystation][1] % 2 == 0:
+      status = "red"
+    else:
+      status = "green"
     data = {
       "d" : {
-        "Station" : mystation
+        "name" : mystation,
+        "status": status
       }
     }
+    print(data)
+
     cloudClient.publishEvent("status", "json", data)
 
 def main():
@@ -47,7 +57,7 @@ def main():
 
   try:
     for station in stations:
-      pins.append(mraa.Gpio(stations[station]))
+      pins.append(mraa.Gpio(stations[station][0]))
 
     for x in pins:
       x.dir(mraa.DIR_IN)
