@@ -8,16 +8,15 @@ stations = {
   "Hunt" : [48, 0]
 }
 
-counts = [0, 0, 0]
 
 ''' Connection establishment to IBM Bluemix Cloud'''
-cloudTopic = "status"
+cloudTopic = "trafficSignal"
 
 try:
   cloudOptions = {
-    "org": "i5nag4",
-    "type": "edison",
-    "id": "infrastructure-1",
+    "org": "y8ck3c",
+    "type": "vehicle",
+    "id": "ABC",
     "auth-method": "token",
     "auth-token": "EcE592net"
   }
@@ -47,7 +46,7 @@ def onButtonPush(gpio):
     }
     print(data)
 
-    cloudClient.publishEvent("status", "json", data)
+    cloudClient.publishEvent(cloudTopic, "json", data)
 
 def main():
 
