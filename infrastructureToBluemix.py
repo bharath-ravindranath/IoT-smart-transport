@@ -6,7 +6,7 @@ import ibmiotf.device
 infraOptions = {
   "username" : "iot_user",
   "password" : "EcE592net!",
-  "broker"   : "10.139.68.190", #Mqtt broker to connect to
+  "broker"   : "192.168.1.241", #Mqtt broker to connect to
   "sub_topic" : "#", #control signal from infrastructure element
   "port"    : 1883,
 }

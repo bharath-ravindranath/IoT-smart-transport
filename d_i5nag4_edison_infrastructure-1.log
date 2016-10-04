@@ -1,0 +1,5 @@
+2016-08-20 12:26:20,286   ibmiotf.device.Client      WARNING Unable to encrypt messages because TLSv1.2 is unavailable (MQTT over SSL requires at least Python v2.7.9 or 3.4 and openssl v1.0.1)
+2016-08-20 15:11:40,976   ibmiotf.device.Client      WARNING Unable to encrypt messages because TLSv1.2 is unavailable (MQTT over SSL requires at least Python v2.7.9 or 3.4 and openssl v1.0.1)
+2016-08-20 15:11:42,909   ibmiotf.device.Client      INFO    Connected successfully: d:i5nag4:edison:infrastructure-1
+2016-08-20 15:15:04,739   ibmiotf.device.Client      WARNING Unable to encrypt messages because TLSv1.2 is unavailable (MQTT over SSL requires at least Python v2.7.9 or 3.4 and openssl v1.0.1)
+2016-08-20 15:15:11,436   ibmiotf.device.Client      INFO    Connected successfully: d:i5nag4:edison:infrastructure-1

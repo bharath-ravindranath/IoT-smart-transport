@@ -1,5 +1,6 @@
 import mraa, time, sys
 import ibmiotf.device
+import json
 
 ''' List of stations (We should make a database to put list of stations)'''
 stations = {
@@ -13,13 +14,8 @@ stations = {
 cloudTopic = "trafficSignal"
 
 try:
-  cloudOptions = {
-    "org": "y8ck3c",
-    "type": "vehicle",
-    "id": "ABC",
-    "auth-method": "token",
-    "auth-token": "EcE592net"
-  }
+  with open('credentials.json') as data_file:    
+    cloudOptions = json.load(data_file)
   cloudClient = ibmiotf.device.Client(cloudOptions)
 except ibmiotf.ConnectionException  as e:
   print("Execption")
