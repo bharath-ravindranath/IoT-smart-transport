@@ -20,7 +20,7 @@ def main():
     print("Registered Device = ", apiClient.registerDevice(deviceTypeId, deviceId, authToken))
     
     print("\nRetrieving an existing device")  
-    print("Retrieved Device = ", apiClient.getDevice(deviceTypeId, deviceId))
+    print(json.dumps(apiClient.getDevice(deviceTypeId, deviceId), indent=4, sort_keys=True))
 
     var = raw_input("Press Enter to stop")
     
