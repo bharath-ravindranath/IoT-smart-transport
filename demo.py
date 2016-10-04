@@ -73,7 +73,8 @@ def main():
       "id": deviceId,
       "auth-method": "token",
       "auth-token": authToken
-    } 
+    }
+    print cloudOptions 
     #cloudOptions = json.load(data_file)
     print(cloudOptions)
     global cloudClient
