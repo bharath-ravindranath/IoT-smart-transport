@@ -4,8 +4,10 @@ import ibmiotf
 import ibmiotf.device
 import logging
 import json
+import mraa, time
+from uuid import getnode as get_mac
 
-import mraa, time, sys
+
 ''' List of stations (We should make a database to put list of stations)'''
 stations = {
   "EB1" : [14, 0],
@@ -51,7 +53,7 @@ def main():
 
     deviceTypeId = "Signal"
 
-    deviceId = "testDevice"
+    deviceId = str(get_mac())
     authToken = "EcE592net"
     
     print("\nRegistering a new device") 
