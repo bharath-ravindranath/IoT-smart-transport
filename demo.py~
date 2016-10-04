@@ -56,7 +56,6 @@ def main():
     
     print("\nRegistering a new device") 
     print("Registered Device = ")
-    apiClient.registerDevice(deviceTypeId, deviceId, authToken)
     print(json.dumps(apiClient.getDevice(deviceTypeId, deviceId), indent=4, sort_keys=True)) 
     # print("\nRetrieving an existing device")  
     # print("Retrieved Device = ", apiClient.getDevice(deviceTypeId, deviceId))
