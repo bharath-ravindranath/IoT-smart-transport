@@ -68,14 +68,17 @@ def main():
 
   try:
     cloudOptions = {
-      "org": apiOptions["org"],
+      "org": str(apiOptions["org"]),
       "type": deviceTypeId,
       "id": deviceId,
       "auth-method": "token",
       "auth-token": authToken
     } 
     #cloudOptions = json.load(data_file)
+    print(cloudOptions)
+    global cloudClient
     cloudClient = ibmiotf.device.Client(cloudOptions)
+    cloudClient.connect()
   except ibmiotf.ConnectionException  as e:
     print("Execption")
 

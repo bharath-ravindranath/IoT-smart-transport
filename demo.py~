@@ -4,13 +4,14 @@ import ibmiotf
 import ibmiotf.device
 import logging
 import json
+import mraa, time
+from uuid import getnode as get_mac
 
-import mraa, time, sys
 ''' List of stations (We should make a database to put list of stations)'''
-stations = {
-  "EB1" : [14, 0],
-  "EB2" : [36, 0],
-  "Hunt" : [48, 0]
+signal = {
+  14: "red",
+  36: "yellow",
+  48: "green"
 }
 
 
@@ -19,18 +20,11 @@ cloudTopic = "trafficSignal"
 
 ''' When at a station, We press the appropriate button, which will send the 
 message to IBM Blumix for the device location'''
+''' When at a station, We press the appropriate button, which will send the 
+message to IBM Blumix for the device location'''
 def onButtonPush(gpio):
   if gpio.read() == 1:
-    mystation = ""
-    status = ""
-    for key, value in stations.iteritems():
-      if value[0] == gpio.getPin(False):
-        mystation = str(key)
-    stations[mystation][1] += 1
-    if stations[mystation][1] % 2 == 0:
-      status = "red"
-    else:
-      status = "green"
+    status = signal[gpio.getPin(False)]
     data = {
       "d" : {
         "name" : mystation,
@@ -51,11 +45,12 @@ def main():
 
     deviceTypeId = "Signal"
 
-    deviceId = "testDevice"
+    deviceId = str(get_mac())
     authToken = "EcE592net"
     
     print("\nRegistering a new device") 
     print("Registered Device = ")
+    apiClient.registerDevice(deviceTypeId, deviceId, authToken)
     print(json.dumps(apiClient.getDevice(deviceTypeId, deviceId), indent=4, sort_keys=True)) 
     # print("\nRetrieving an existing device")  
     # print("Retrieved Device = ", apiClient.getDevice(deviceTypeId, deviceId))
@@ -73,22 +68,27 @@ def main():
 
   try:
     cloudOptions = {
-      "org": apiOptions["org"],
+      "org": str(apiOptions["org"]),
       "type": deviceTypeId,
       "id": deviceId,
       "auth-method": "token",
       "auth-token": authToken
     } 
     #cloudOptions = json.load(data_file)
+    print(cloudOptions)
+    global cloudClient
     cloudClient = ibmiotf.device.Client(cloudOptions)
   except ibmiotf.ConnectionException  as e:
     print("Execption")
 
+  global mystation
+  mystation = str(sys.argv[1])
   pins = [] 
 
   try:
-    for station in stations:
-      pins.append(mraa.Gpio(stations[station][0]))
+    
+    for x in signal:
+      pins.append(mraa.Gpio(x))
 
     for x in pins:
       x.dir(mraa.DIR_IN)
