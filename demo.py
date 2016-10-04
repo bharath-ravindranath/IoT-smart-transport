@@ -7,12 +7,11 @@ import json
 import mraa, time
 from uuid import getnode as get_mac
 
-
 ''' List of stations (We should make a database to put list of stations)'''
-stations = {
-  "EB1" : [14, 0],
-  "EB2" : [36, 0],
-  "Hunt" : [48, 0]
+signal = {
+  14: "red",
+  36: "yellow",
+  48: "green"
 }
 
 
@@ -21,18 +20,11 @@ cloudTopic = "trafficSignal"
 
 ''' When at a station, We press the appropriate button, which will send the 
 message to IBM Blumix for the device location'''
+''' When at a station, We press the appropriate button, which will send the 
+message to IBM Blumix for the device location'''
 def onButtonPush(gpio):
   if gpio.read() == 1:
-    mystation = ""
-    status = ""
-    for key, value in stations.iteritems():
-      if value[0] == gpio.getPin(False):
-        mystation = str(key)
-    stations[mystation][1] += 1
-    if stations[mystation][1] % 2 == 0:
-      status = "red"
-    else:
-      status = "green"
+    status = signal[gpio.getPin(False)]
     data = {
       "d" : {
         "name" : mystation,
@@ -87,11 +79,14 @@ def main():
   except ibmiotf.ConnectionException  as e:
     print("Execption")
 
+  global mystation
+  mystation = str(sys.argv[1])
   pins = [] 
 
   try:
-    for station in stations:
-      pins.append(mraa.Gpio(stations[station][0]))
+    
+    for x in signal:
+      pins.append(mraa.Gpio(x))
 
     for x in pins:
       x.dir(mraa.DIR_IN)
